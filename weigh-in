@@ -1,4 +1,4 @@
-#!/usr/bin/nodejs
+#!/usr/bin/js
 
 /* weigh-in: simple node, jquery and flot based weigh-in
 
@@ -46,6 +46,12 @@ http.createServer(function respond(req, res) {
         });
     }
 
+    function seeOther(loc) {
+        res.statusCode = 303;
+        res.setHeader('Location', loc);
+        sendContent("303 See Other\nSee " + loc, 'text/plain');
+    }
+
     function weighIn() {
         if (req.method == 'POST') {
             var args = qs.parse(postData);
@@ -57,12 +63,12 @@ http.createServer(function respond(req, res) {
                 fs.open(userData, 'a', function(e, fd) {
                     fs.write(fd, new Buffer(data), 0, data.length, null, function() {
                         fs.close(fd, function() {
-                            sendContent('okay', 'text/plain');
+                            seeOther('http://' + req.headers.host + '/' + user + '/');
                         });
                     });
                 });
             } else {
-                sendContent('failed', 'text/plain');
+                seeOther('http://' + req.headers.host + '/' + user + '/');
             }
         } else {
             res.statusCode = 405;

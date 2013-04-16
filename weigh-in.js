@@ -17,6 +17,14 @@ this program; if not, write to the Free Software Foundation, Inc., 51
 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA. */
 
 $(function() {
+
+  $('#weigh-in').css('display', 'none');
+
+  $('#chart').click(function() {
+    console.log("click");
+    $('#weigh-in').css('display', 'block');
+  });
+    
   $.ajax('weigh-in.json', {
     complete : function(r) {
       var weight = [], fat = [], waist = [];

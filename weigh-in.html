@@ -20,31 +20,33 @@ Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA. -->
 
 <html>
   <head>
-    <link rel="stylesheet" href="weigh-in.css"/>
+    <link rel="stylesheet" href="weigh-in.css">
     <script type="text/javascript" src="jquery.min.js"></script>
     <script type="text/javascript" src="flot.min.js"></script>
     <script type="text/javascript" src="weigh-in.js"></script>
     <title>weigh-in</title>
   </head>
   <body>
-    <form id="weigh-in" method="post" action="weighin">
-      <ul>
-        <li>
-          <label for="weight">Weight (kg)</label>
-          <input name="weight" id="weight"/>
-        </li>
-        <li>
-          <label for="fat">Fat (%)</label>
-          <input name="fat" id="fat"/>
-        </li>
-        <li>
-          <label for="waist">Waist (mm)</label>
-          <input name="waist" id="waist"/>
-        </li>
-      </ul>
-      <input type="submit" value="send"/>
-    </form>
-    <div id="chart"/>
+    <div id="chart"></div>
+    <div id="weigh-in">
+      <form method="post" action="weigh-in">
+        <ul>
+          <li>
+            <label for="weight">Weight (kg)</label>
+            <input class="text" name="weight" id="weight">
+          </li>
+          <li>
+            <label for="fat">Fat (%)</label>
+            <input class="text" name="fat" id="fat">
+          </li>
+          <li>
+            <label for="waist">Waist (mm)</label>
+            <input class="text" name="waist" id="waist">
+          </li>
+        </ul>
+        <input type="submit" value="send">
+      </form>
+    </div>
   </body>
 </html>
 
