@@ -1,0 +1,127 @@
+#!/usr/bin/nodejs
+
+/* weigh-in: simple node, jquery and flot based weigh-in
+
+Copyright © 2013 John Hedges
+
+This program is free software; you can redistribute it and/or modify it
+under the terms of the GNU General Public License as published by the Free
+Software Foundation; either version 2 of the License, or (at your option)
+any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
+more details.
+
+You should have received a copy of the GNU General Public License along with
+this program; if not, write to the Free Software Foundation, Inc., 51
+Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA. */
+
+var http = require('http');
+var qs = require('querystring');
+var fs = require('fs');
+
+var jquery = '/usr/share/javascript/jquery/jquery.min.js';
+var flot = '/usr/share/javascript/flot/jquery.flot.min.js';
+
+http.createServer(function respond(req, res) {
+
+    function notFound() {
+        res.statusCode = 404;
+        sendContent("404 Not Found", 'text/plain');
+    }
+
+    function sendContent(content, type) {
+        if (!res.statusCode)
+            res.statusCode = 200;
+        res.setHeader('Content-Type', type);
+        res.setHeader('Content-Length', content.length);
+        res.end(content);
+    }
+
+    function sendFile(file, type) {
+        fs.readFile(file, function(e, data) {
+            sendContent(data, type);
+        });
+    }
+
+    function weighIn() {
+        if (req.method == 'POST') {
+            var args = qs.parse(postData);
+            var weight = parseFloat(args.weight);
+            var fat = parseFloat(args.fat);
+            var waist = parseInt(args.waist);
+            if (weight && fat && waist) {
+                var data = [Math.floor(new Date().getTime()/1000), weight, fat, waist].join(',')+'\n';
+                fs.open(userData, 'a', function(e, fd) {
+                    fs.write(fd, new Buffer(data), 0, data.length, null, function() {
+                        fs.close(fd, function() {
+                            sendContent('okay', 'text/plain');
+                        });
+                    });
+                });
+            } else {
+                sendContent('failed', 'text/plain');
+            }
+        } else {
+            res.statusCode = 405;
+            res.setHeader('Allow', 'POST');
+            sendContent('405 - Method Not Allowed', 'text/plain');
+        }
+    }
+
+    function sendData() {
+        fs.readFile(userData, function(e, d) {
+            sendContent(JSON.stringify(d.toString().split('\n').filter(function(l) { 
+                return l.length;
+            }).map(function(r) {
+                return r.split(',').map(function(s) {
+                    return parseFloat(s);
+                })
+            })), 'application/json');
+        });
+    }
+
+    console.log(req.url);
+    var path = req.url.slice(1).split('/'); 
+    var user = path[0];
+    var userData = 'data/' + user;
+
+    var postData = '';
+    req.on('data', function(d) {
+        postData += d;
+    });
+
+    req.on('end', function() {
+        fs.stat(userData, function(e, s) {
+            if (e || !s.isFile()) {
+                notFound();
+            } else {
+                var resource = path[1];
+                if (typeof resource === 'undefined') {
+                    res.statusCode = 301;
+                    res.setHeader('Location', 'http://' + req.headers.host + '/' + user + '/');
+                    sendContent('301 - Redirect', 'text/plain');
+                } else if (resource == "") {
+                    sendFile('weigh-in.html', 'text/html');
+                } else if (resource == 'weigh-in.css') {
+                    sendFile('weigh-in.css', 'text/css');
+                } else if (resource == 'weigh-in.js') {
+                    sendFile('weigh-in.js', 'text/javascript');
+                } else if (resource == 'jquery.min.js') {
+                    sendFile(jquery, 'text/javascript');
+                } else if (resource == 'flot.min.js') {
+                    sendFile(flot, 'text/javascript');
+                } else if (resource == 'weigh-in.json') {
+                    sendData();
+                } else if (resource == 'weigh-in') {
+                    weighIn();
+                } else {
+                    notFound();
+                }
+            }
+        });
+    });
+}).listen(6503);
+
