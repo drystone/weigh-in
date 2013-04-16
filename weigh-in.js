@@ -21,8 +21,8 @@ $(function() {
   $('#weigh-in').css('display', 'none');
 
   $('#chart').click(function() {
-    console.log("click");
     $('#weigh-in').css('display', 'block');
+    $('#weight').focus();
   });
     
   $.ajax('weigh-in.json', {
@@ -34,6 +34,11 @@ $(function() {
         fat.push([time, r[2]]);
         waist.push([time, r[3]]);
       });
+      if (weight.length) {
+        $('#weight').val(weight[weight.length-1][1]);
+        $('#fat').val(fat[fat.length-1][1]);
+        $('#waist').val(waist[waist.length-1][1]);
+      }
       console.log(weight);
       $.plot('#chart', [{
           label: 'weight'
