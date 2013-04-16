@@ -79,6 +79,7 @@ http.createServer(function respond(req, res) {
 
     function sendData() {
         fs.readFile(userData, function(e, d) {
+            res.setHeader('Cache-Control', 'no-cache');
             sendContent(JSON.stringify(d.toString().split('\n').filter(function(l) { 
                 return l.length;
             }).map(function(r) {
