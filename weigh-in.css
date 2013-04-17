@@ -64,7 +64,7 @@ table {
 
 ul {
   list-style: none;
-  padding: 20px;
+  padding: 40px 20px 10px 20px;
 }
 
 body {
@@ -80,7 +80,6 @@ body {
 }
 
 #weigh-in {
-  display: none;
   position: absolute;
   top: 50px;
   left: 50%;
@@ -126,3 +125,9 @@ input.text {
   font-size: 140%;
 }
 
+#close {
+  position: absolute;
+  right: 0;
+  background: transparent;
+  border: 1px solid black;
+}

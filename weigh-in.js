@@ -25,6 +25,11 @@ $(function() {
     $('#weight').focus();
   });
     
+  $('#close').click(function(e) {
+    e.preventDefault();
+    $('#weigh-in').css('display', 'none');
+  });
+
   $.ajax('weigh-in.json', {
     complete : function(r) {
       var weight = [], fat = [], waist = [];
