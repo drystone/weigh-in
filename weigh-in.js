@@ -39,26 +39,18 @@ $(function() {
         $('#fat').val(fat[fat.length-1][1]);
         $('#waist').val(waist[waist.length-1][1]);
       }
-      console.log(weight);
-      $.plot('#chart', [{
-          label: 'weight'
-        , data: weight
-        , yaxis : 1
-        }, {
-          label : 'fat'
-        , data : fat
-        , yaxis : 2
-        }, {
-          label : 'waist'
-        , data : waist
-        , yaxis : 3
-        }
+      var plot = $.plot('#chart', [
+        { label : 'weight', data : weight, yaxis : 1 }
+      , { label : 'fat',    data : fat,    yaxis : 2 }
+      , { label : 'waist',  data : waist,  yaxis : 3 }
       ], {
-        xaxis : {
-          mode : 'time'
-        , timeformat : '%y/%m/%d'
-        }
+        xaxis : { mode : 'time' , timeformat : '%y/%m/%d' }
       });
+      plot.getAxes().yaxis.options.color = plot.getData()[0].color;
+      plot.getAxes().y2axis.options.color = plot.getData()[1].color;
+      plot.getAxes().y3axis.options.color = plot.getData()[2].color;
+      plot.setupGrid();
+      plot.draw();
     }
   });
 });
