@@ -64,12 +64,14 @@ table {
 
 ul {
   list-style: none;
+  padding: 20px;
 }
 
 body {
   position: relative;
   padding: 10px;
   font-family: sans-serif;
+  background: #333;
 }
 
 #chart {
@@ -89,7 +91,6 @@ body {
   left: -50%;
   border: 1px solid black;
   background: #fff;
-  padding: 20px;
 }
 
 #weigh-in li {
@@ -113,5 +114,15 @@ input.text {
   width: 3em;
   border: 1px solid #666;
   font-size: 100%;
+}
+
+#submit {
+  width: 100%;
+  border: none;
+  margin: 0;
+  padding: 10px;
+  background: #FFD754;
+  border-top: 1px solid black;
+  font-size: 140%;
 }
 
