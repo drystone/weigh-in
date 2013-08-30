@@ -50,10 +50,12 @@ $(function() {
       , { label : 'waist',  data : waist,  yaxis : 3 }
       ], {
         xaxis : { mode : 'time' , timeformat : '%y/%m/%d' }
+      , legend : { position : 'nw' }
       });
-      plot.getAxes().yaxis.options.color = plot.getData()[0].color;
       plot.getAxes().y2axis.options.color = plot.getData()[1].color;
+      plot.getAxes().y2axis.options.tickColor = plot.getData()[1].color;
       plot.getAxes().y3axis.options.color = plot.getData()[2].color;
+      plot.getAxes().y3axis.options.tickColor = plot.getData()[2].color;
       plot.setupGrid();
       plot.draw();
     }

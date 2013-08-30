@@ -24,6 +24,7 @@ var fs = require('fs');
 
 var jquery = '/usr/share/javascript/jquery/jquery.min.js';
 var flot = '/usr/share/javascript/flot/jquery.flot.min.js';
+var flot_time = '/usr/share/javascript/flot/jquery.flot.time.js';
 
 http.createServer(function respond(req, res) {
 
@@ -120,6 +121,8 @@ http.createServer(function respond(req, res) {
                     sendFile(jquery, 'text/javascript');
                 } else if (resource == 'flot.min.js') {
                     sendFile(flot, 'text/javascript');
+                } else if (resource == 'flot.time.js') {
+                    sendFile(flot_time, 'text/javascript');
                 } else if (resource == 'weigh-in.json') {
                     sendData();
                 } else if (resource == 'weigh-in') {
